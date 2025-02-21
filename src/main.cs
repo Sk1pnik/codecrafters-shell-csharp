@@ -22,7 +22,7 @@ namespace codecrafters.shell
                     {
                         if (command.Length > firstCommand.Length)
                         {
-                            Console.WriteLine(command.Substring(firstCommand.Length));
+                            Console.WriteLine(command.Substring(firstCommand.Length).TrimStart());
                         }
                     }
                     else if (firstCommand == Commands.Exit.GetEnumDescription())
