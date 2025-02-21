@@ -34,7 +34,7 @@ namespace codecrafters.shell
                         var commands = EnumExtensions.GetEnumDescriptions(typeof(Commands));
                         if (commands.Contains(tokens[1]))
                         {
-                            Console.WriteLine($"{tokens[1]}  is a shell builtin");
+                            Console.WriteLine($"{tokens[1]} is a shell builtin");
                         }
                         else
                         {
