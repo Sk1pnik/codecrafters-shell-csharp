@@ -38,7 +38,7 @@ namespace codecrafters.shell
                         }
                         else
                         {
-                            CommandNotFound(command);
+                            Console.WriteLine($"{tokens[1]}: not found");
                         }
                     }
                     else
