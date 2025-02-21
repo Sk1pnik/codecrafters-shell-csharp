@@ -29,16 +29,33 @@ namespace codecrafters.shell
                     {
                         break;
                     }
+                    else if (firstCommand == Commands.Type.GetEnumDescription())
+                    {
+                        var commands = EnumExtensions.GetEnumDescriptions(typeof(Commands));
+                        if (commands.Contains(tokens[1]))
+                        {
+                            Console.WriteLine($"{tokens[1]}  is a shell builtin");
+                        }
+                        else
+                        {
+                            CommandNotFound(command);
+                        }
+                    }
                     else
                     {
-                        Console.WriteLine($"{command}: command not found");
+                        CommandNotFound(command);
                     }
                 }
                 else
                 {
-                    Console.WriteLine($"{command}: command not found");
+                    CommandNotFound(command);
                 }
             }
+        }
+
+        private static void CommandNotFound(string command)
+        {
+            Console.WriteLine($"{command}: command not found");
         }
     }
 }
