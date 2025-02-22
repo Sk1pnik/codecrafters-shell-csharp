@@ -37,16 +37,21 @@ namespace codecrafters.shell
                         {
                             var pathVariable = Environment.GetEnvironmentVariable("PATH");
                             var pathArr = pathVariable.Split(":");
+                            var isFound = false;
                             foreach (var path in pathArr)
                             {
                                 var fullPath = Path.Join(path, secondCommand);
                                 if (File.Exists(fullPath))
                                 {
+                                    isFound = true;
                                     Console.WriteLine($"{secondCommand} is {fullPath}");
                                     break;
                                 }
 
-                                Console.WriteLine($"{secondCommand}: not found");
+                                if (!isFound)
+                                {
+                                    Console.WriteLine($"{secondCommand}: not found");
+                                }
                             }
                         }
                         else
