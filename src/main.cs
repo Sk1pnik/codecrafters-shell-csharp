@@ -90,8 +90,14 @@ namespace codecrafters.shell
                                 {
                                     var rnd = new Random();
                                     isFound = true;
+                                    Console.WriteLine(
+                                        $"Program was passed {tokens.Length} args (including program name).");
                                     Console.WriteLine($"Arg #0 (program name): {tokens[0]}");
-                                    Console.WriteLine($"Arg #1: {tokens[1]}");
+                                    for (int i = 1; i < tokens.Length; i++)
+                                    {
+                                        Console.WriteLine($"Arg #{i}: {tokens[i]}");
+                                    }
+
                                     Console.WriteLine($"Program Signature: {rnd.Next()}");
                                     break;
                                 }
