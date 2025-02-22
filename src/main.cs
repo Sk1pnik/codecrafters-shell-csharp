@@ -49,6 +49,7 @@ namespace codecrafters.shell
                                 {
                                     isFound = true;
                                     Console.WriteLine($"{secondCommand} is {fullPath}");
+                                    break;
                                 }
                             }
 
