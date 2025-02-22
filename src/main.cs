@@ -35,6 +35,10 @@ namespace codecrafters.shell
                         var secondCommand = tokens[1];
                         if (commands.Contains(secondCommand))
                         {
+                            Console.WriteLine($"{secondCommand} is a shell builtin");
+                        }
+                        else
+                        {
                             var pathVariable = Environment.GetEnvironmentVariable("PATH");
                             var pathArr = pathVariable.Split(":");
                             var isFound = false;
@@ -52,10 +56,6 @@ namespace codecrafters.shell
                             {
                                 Console.WriteLine($"{secondCommand}: not found");
                             }
-                        }
-                        else
-                        {
-                            Console.WriteLine($"{secondCommand}: not found");
                         }
                     }
                     else
