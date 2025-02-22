@@ -40,12 +40,11 @@ namespace codecrafters.shell
                             var isFound = false;
                             foreach (var path in pathArr)
                             {
-                                var fullPath = Path.Join(path, secondCommand);
+                                var fullPath = Path.Combine(path, secondCommand);
                                 if (File.Exists(fullPath))
                                 {
                                     isFound = true;
                                     Console.WriteLine($"{secondCommand} is {fullPath}");
-                                    break;
                                 }
                             }
 
