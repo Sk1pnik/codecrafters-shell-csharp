@@ -47,11 +47,11 @@ namespace codecrafters.shell
                                     Console.WriteLine($"{secondCommand} is {fullPath}");
                                     break;
                                 }
+                            }
 
-                                if (!isFound)
-                                {
-                                    Console.WriteLine($"{secondCommand}: not found");
-                                }
+                            if (!isFound)
+                            {
+                                Console.WriteLine($"{secondCommand}: not found");
                             }
                         }
                         else
