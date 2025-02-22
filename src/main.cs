@@ -10,6 +10,7 @@ namespace codecrafters.shell
         public static void Main(string[] args)
         {
             // Wait for user input
+            var commands = new string[] { "echo", "exit", "type" };
             while (true)
             {
                 Console.Write("$ ");
@@ -18,50 +19,91 @@ namespace codecrafters.shell
                 {
                     var tokens = command.Split(' ');
                     var firstCommand = tokens[0];
-                    if (firstCommand == Commands.Echo.GetEnumDescription())
+                    switch (firstCommand)
                     {
-                        if (command.Length > firstCommand.Length)
+                        case "echo":
                         {
-                            Console.WriteLine(command.Substring(firstCommand.Length).TrimStart());
+                            if (command.Length > firstCommand.Length)
+                            {
+                                Console.WriteLine(command.Substring(firstCommand.Length).TrimStart());
+                            }
+
+                            break;
                         }
-                    }
-                    else if (firstCommand == Commands.Exit.GetEnumDescription())
-                    {
-                        break;
-                    }
-                    else if (firstCommand == Commands.Type.GetEnumDescription())
-                    {
-                        var commands = EnumExtensions.GetEnumDescriptions(typeof(Commands));
-                        var secondCommand = tokens[1];
-                        if (commands.Contains(secondCommand))
+                        case "exit":
                         {
-                            Console.WriteLine($"{secondCommand} is a shell builtin");
+                            break;
                         }
-                        else
+                        case "type":
                         {
+                            var secondCommand = tokens[1];
+                            if (commands.Contains(secondCommand))
+                            {
+                                Console.WriteLine($"{secondCommand} is a shell builtin");
+                            }
+                            else
+                            {
+                                var pathVariable = Environment.GetEnvironmentVariable("PATH");
+
+                                if (pathVariable == null)
+                                {
+                                    CommandNotFound(secondCommand);
+                                }
+
+                                var isFound = false;
+                                var pathArr = pathVariable.Split(":");
+                                foreach (var path in pathArr)
+                                {
+                                    var fullPath = Path.Combine(path, secondCommand);
+                                    if (File.Exists(fullPath))
+                                    {
+                                        isFound = true;
+                                        Console.WriteLine($"{secondCommand} is {fullPath}");
+                                        break;
+                                    }
+                                }
+
+                                if (!isFound)
+                                {
+                                    Console.WriteLine($"{secondCommand}: not found");
+                                }
+                            }
+
+                            break;
+                        }
+                        default:
+                        {
+                            //refactor if there is another occurence of path 
                             var pathVariable = Environment.GetEnvironmentVariable("PATH");
-                            var pathArr = pathVariable.Split(":");
+
+                            if (pathVariable == null)
+                            {
+                                CommandNotFound(firstCommand);
+                            }
+
                             var isFound = false;
+                            var pathArr = pathVariable.Split(":");
                             foreach (var path in pathArr)
                             {
-                                var fullPath = Path.Combine(path, secondCommand);
+                                var fullPath = Path.Combine(path, firstCommand);
                                 if (File.Exists(fullPath))
                                 {
+                                    var rnd = new Random();
                                     isFound = true;
-                                    Console.WriteLine($"{secondCommand} is {fullPath}");
+                                    Console.WriteLine($"Arg #0 (program name): {tokens[0]}");
+                                    Console.WriteLine($"Arg #1: {tokens[1]}");
+                                    Console.WriteLine($"Program Signature: {rnd.Next()}");
                                     break;
                                 }
                             }
 
                             if (!isFound)
                             {
-                                Console.WriteLine($"{secondCommand}: not found");
+                                CommandNotFound(firstCommand);
                             }
+
+                            break;
                         }
-                    }
-                    else
-                    {
-                        CommandNotFound(command);
                     }
                 }
                 else
