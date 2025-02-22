@@ -32,13 +32,26 @@ namespace codecrafters.shell
                     else if (firstCommand == Commands.Type.GetEnumDescription())
                     {
                         var commands = EnumExtensions.GetEnumDescriptions(typeof(Commands));
-                        if (commands.Contains(tokens[1]))
+                        var secondCommand = tokens[1];
+                        if (commands.Contains(secondCommand))
                         {
-                            Console.WriteLine($"{tokens[1]} is a shell builtin");
+                            var pathVariable = Environment.GetEnvironmentVariable("PATH");
+                            var pathArr = pathVariable.Split(":");
+                            foreach (var path in pathArr)
+                            {
+                                var fullPath = Path.Join(path, secondCommand);
+                                if (File.Exists(fullPath))
+                                {
+                                    Console.WriteLine($"{secondCommand} is {fullPath}");
+                                    break;
+                                }
+
+                                Console.WriteLine($"{secondCommand}: not found");
+                            }
                         }
                         else
                         {
-                            Console.WriteLine($"{tokens[1]}: not found");
+                            Console.WriteLine($"{secondCommand}: not found");
                         }
                     }
                     else
