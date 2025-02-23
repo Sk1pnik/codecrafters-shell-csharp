@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using codecrafters.shell.Enums;
@@ -37,35 +38,22 @@ namespace codecrafters.shell
                         case "type":
                         {
                             var secondCommand = tokens[1];
+
                             if (commands.Contains(secondCommand))
                             {
                                 Console.WriteLine($"{secondCommand} is a shell builtin");
                             }
                             else
                             {
-                                var pathVariable = Environment.GetEnvironmentVariable("PATH");
+                                var path = FindInPath(secondCommand);
 
-                                if (pathVariable == null)
-                                {
-                                    CommandNotFound(secondCommand);
-                                }
-
-                                var isFound = false;
-                                var pathArr = pathVariable.Split(":");
-                                foreach (var path in pathArr)
-                                {
-                                    var fullPath = Path.Combine(path, secondCommand);
-                                    if (File.Exists(fullPath))
-                                    {
-                                        isFound = true;
-                                        Console.WriteLine($"{secondCommand} is {fullPath}");
-                                        break;
-                                    }
-                                }
-
-                                if (!isFound)
+                                if (path == null)
                                 {
                                     Console.WriteLine($"{secondCommand}: not found");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"{secondCommand} is {path}");
                                 }
                             }
 
@@ -73,45 +61,23 @@ namespace codecrafters.shell
                         }
                         default:
                         {
-                            //refactor if there is another occurence of path 
-                            var pathVariable = Environment.GetEnvironmentVariable("PATH");
+                            var path = FindInPath(firstCommand);
 
-                            if (pathVariable == null)
+                            if (path == null)
                             {
                                 CommandNotFound(firstCommand);
                             }
-
-                            var isFound = false;
-                            var pathArr = pathVariable.Split(":");
-                            foreach (var path in pathArr)
+                            else if (path is string pathDir)
                             {
-                                var fullPath = Path.Combine(path, firstCommand);
-                                if (File.Exists(fullPath))
-                                {
-                                    var rnd = new Random();
-                                    isFound = true;
-                                    Console.WriteLine(
-                                        $"Program was passed {tokens.Length} args (including program name).");
-                                    Console.WriteLine($"Arg #0 (program name): {tokens[0]}");
-                                    for (int i = 1; i < tokens.Length; i++)
-                                    {
-                                        Console.WriteLine($"Arg #{i}: {tokens[i]}");
-                                    }
-
-                                    Console.WriteLine($"Program Signature: {rnd.Next()}");
-                                    break;
-                                }
-                            }
-
-                            if (!isFound)
-                            {
-                                CommandNotFound(firstCommand);
+                                var programArgs = command.Substring(firstCommand.Length).TrimStart();
+                                Process.Start(pathDir, programArgs);
                             }
 
                             break;
                         }
                     }
                 }
+
                 else
                 {
                     CommandNotFound(command);
@@ -122,6 +88,14 @@ namespace codecrafters.shell
         private static void CommandNotFound(string command)
         {
             Console.WriteLine($"{command}: command not found");
+        }
+
+        private static string? FindInPath(string command)
+        {
+            return Environment.GetEnvironmentVariable("PATH")?
+                .Split(":")
+                .Select(p => Path.Combine(p, command))
+                .FirstOrDefault(File.Exists);
         }
     }
 }
