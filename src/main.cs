@@ -33,6 +33,7 @@ namespace codecrafters.shell
                         }
                         case "exit":
                         {
+                            Environment.Exit(0);
                             break;
                         }
                         case "type":
