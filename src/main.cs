@@ -69,7 +69,7 @@ namespace codecrafters.shell
                             }
                             else if (path is string pathDir)
                             {
-                                var programArgs = command.Substring(firstCommand.Length).TrimStart();
+                                var programArgs = command[firstCommand.Length..].TrimStart();
                                 Process.Start(pathDir, programArgs);
                             }
 
