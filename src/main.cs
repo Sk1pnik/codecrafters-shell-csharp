@@ -11,7 +11,7 @@ namespace codecrafters.shell
         public static void Main(string[] args)
         {
             // Wait for user input
-            var commands = new string[] { "echo", "exit", "type", "pwd" };
+            var commands = new string[] { "echo", "exit", "type", "pwd", "cd" };
             while (true)
             {
                 Console.Write("$ ");
@@ -63,6 +63,27 @@ namespace codecrafters.shell
                         case "pwd":
                         {
                             Console.WriteLine(Directory.GetCurrentDirectory());
+                            break;
+                        }
+                        case "cd":
+                        {
+                            var currentPath = Directory.GetCurrentDirectory();
+                            var path = Path.GetFullPath(tokens[1]);
+                            var joinedPath = Path.Join(currentPath, path);
+
+                            if (Path.Exists(joinedPath))
+                            {
+                                Directory.SetCurrentDirectory(joinedPath);
+                            }
+                            else if (Path.IsPathFullyQualified(path) && Path.Exists(path))
+                            {
+                                Directory.SetCurrentDirectory(path);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"{path}: No such file or directory");
+                            }
+
                             break;
                         }
                         default:
