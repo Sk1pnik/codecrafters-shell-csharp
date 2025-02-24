@@ -11,7 +11,7 @@ namespace codecrafters.shell
         public static void Main(string[] args)
         {
             // Wait for user input
-            var commands = new string[] { "echo", "exit", "type" };
+            var commands = new string[] { "echo", "exit", "type", "pwd" };
             while (true)
             {
                 Console.Write("$ ");
@@ -58,6 +58,11 @@ namespace codecrafters.shell
                                 }
                             }
 
+                            break;
+                        }
+                        case "pwd":
+                        {
+                            Console.WriteLine(Directory.GetCurrentDirectory());
                             break;
                         }
                         default:
