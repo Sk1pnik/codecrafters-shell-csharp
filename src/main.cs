@@ -71,7 +71,11 @@ namespace codecrafters.shell
                             var path = Path.GetFullPath(tokens[1]);
                             var joinedPath = Path.Join(currentPath, path);
 
-                            if (Path.Exists(joinedPath))
+                            if (tokens[1] == "~")
+                            {
+                                Directory.SetCurrentDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+                            }
+                            else if (Path.Exists(joinedPath))
                             {
                                 Directory.SetCurrentDirectory(joinedPath);
                             }
