@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using codecrafters.shell.Enums;
 using codecrafters.shell.Extensions;
 
@@ -18,7 +19,7 @@ namespace codecrafters.shell
                 var command = Console.ReadLine();
                 if (command != null)
                 {
-                    var tokens = command.Split(' ');
+                    var tokens = Parse(command);
                     var firstCommand = tokens[0];
                     switch (firstCommand)
                     {
@@ -127,6 +128,17 @@ namespace codecrafters.shell
                 .Split(":")
                 .Select(p => Path.Combine(p, command))
                 .FirstOrDefault(File.Exists);
+        }
+
+        private static string[] Parse(string input)
+        {
+            var regex = new Regex(@"'([^']*)'|(\S+)");
+            var matches = regex.Matches(input);
+
+           return matches
+                .Select(match => match.Groups[1].Success ? match.Groups[1].Value
+                                                         : match.Groups[2].Value)
+                .ToArray();
         }
     }
 }
