@@ -29,7 +29,7 @@ namespace codecrafters.shell
                             if (command.Length > firstCommand.Length)
                             {
 
-                                Console.WriteLine(string.Join(" ", tokens).Substring(firstCommand.Length));
+                                Console.WriteLine(string.Join(" ", tokens).Substring(firstCommand.Length + 1));
                             }
 
                             break;
