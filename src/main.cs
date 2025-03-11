@@ -32,7 +32,7 @@ namespace codecrafters.shell
 
                                 for (int i = 1; i < tokens.Length; i++)
                                 {
-                                    sb.Append(tokens[i]);
+                                    sb.Append(" " + tokens[i]);
                                 }
                                 Console.WriteLine(sb.ToString());
                             }
