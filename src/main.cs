@@ -28,13 +28,8 @@ namespace codecrafters.shell
                         {
                             if (command.Length > firstCommand.Length)
                             {
-                                var sb = new StringBuilder();
 
-                                for (int i = 1; i < tokens.Length; i++)
-                                {
-                                    sb.Append(" " + tokens[i]);
-                                }
-                                Console.WriteLine(sb.ToString());
+                                Console.WriteLine(string.Join(" ", tokens).Substring(firstCommand.Length));
                             }
 
                             break;
