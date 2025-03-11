@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Text.RegularExpressions;
 using codecrafters.shell.Enums;
 using codecrafters.shell.Extensions;
@@ -27,7 +28,13 @@ namespace codecrafters.shell
                         {
                             if (command.Length > firstCommand.Length)
                             {
-                                Console.WriteLine(command.Substring(firstCommand.Length).TrimStart());
+                                var sb = new StringBuilder();
+
+                                for (int i = 1; i < tokens.Length; i++)
+                                {
+                                    sb.Append(tokens[i]);
+                                }
+                                Console.WriteLine(tokens.ToString());
                             }
 
                             break;
@@ -101,7 +108,7 @@ namespace codecrafters.shell
                             }
                             else if (path is string pathDir)
                             {
-                                var programArgs = command[firstCommand.Length..].TrimStart();
+                                var programArgs = string.Join(" ", tokens.Select(arg => $"\"{arg}\""));
                                 Process.Start(firstCommand, programArgs);
                             }
 
