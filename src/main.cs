@@ -34,7 +34,7 @@ namespace codecrafters.shell
                                 {
                                     sb.Append(tokens[i]);
                                 }
-                                Console.WriteLine(tokens.ToString());
+                                Console.WriteLine(sb.ToString());
                             }
 
                             break;
